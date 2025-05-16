@@ -49,7 +49,7 @@ def combine_docs_RAG(docs):
 
 def get_qa_history_chain_RAG():
     retriever = get_retriever_RAG()
-    ## llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
+
     llm = ZhipuaiLLM(model_name="glm-4-plus", temperature=0.1)
     condense_question_system_template = (
         "请根据聊天记录总结用户最近的问题，"
@@ -96,33 +96,9 @@ def get_qa_history_chain_RAG():
     return qa_history_chain
 
 
-# def get_retriever_RAG_temp():
-#     embedding = ZhipuAIEmbeddings()
-    
-#     # 加载多个向量库
-#     vectordb1 = Chroma(
-#         persist_directory='dxyu_DB/vector_db/chroma',  # 第一个库路径
-#         embedding_function=embedding
-#     )
-#     vectordb2 = Chroma(
-#         persist_directory='UserTMP/vector_db/chroma',  # 第二个库路径
-#         embedding_function=embedding
-#     )
-    
-#     # 创建检索器并设置返回数量
-#     retriever1 = vectordb1.as_retriever(search_kwargs={"k": 3})
-#     retriever2 = vectordb2.as_retriever(search_kwargs={"k": 3})
-    
-#     # 合并检索器（假设权重相同）
-#     ensemble_retriever = EnsembleRetriever(
-#         retrievers=[retriever1, retriever2],
-#         weights=[0.5, 0.5]  # 调整权重
-#     )
-#     return ensemble_retriever
 
 def get_qa_history_chain_RAG_temp():
     retriever = get_retriever_RAG_temp()
-    ## llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
     llm = ZhipuaiLLM(model_name="glm-4-plus", temperature=0.1)
     condense_question_system_template = (
         "请根据聊天记录总结用户最近的问题，"

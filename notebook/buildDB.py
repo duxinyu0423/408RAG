@@ -12,9 +12,6 @@ from langchain_community.vectorstores import Chroma
 def build_DB(user_file_path):
     _ = load_dotenv(find_dotenv())
 
-    # 如果你需要通过代理端口访问，你需要如下配置
-    # os.environ['HTTPS_PROXY'] = 'http://127.0.0.1:7890'
-    # os.environ["HTTP_PROXY"] = 'http://127.0.0.1:7890'
 
     # 获取folder_path下所有文件路径，储存在file_paths里
     file_paths = []
@@ -53,29 +50,23 @@ def build_DB(user_file_path):
 
     split_docs = text_splitter.split_documents(texts)
 
-    # 使用 OpenAI Embedding
-    # from langchain.embeddings.openai import OpenAIEmbeddings
-    # 使用百度千帆 Embedding
-    # from langchain.embeddings.baidu_qianfan_endpoint import QianfanEmbeddingsEndpoint
-    # 使用我们自己封装的智谱 Embedding，需要将封装代码下载到本地使用
 
 
-    # 定义 Embeddings
-    # embedding = OpenAIEmbeddings() 
+
     embedding = ZhipuAIEmbeddings()
-    # embedding = QianfanEmbeddingsEndpoint()
 
-    # 定义持久化路径
+
+
     persist_directory = user_file_path + '/vector_db/chroma'
 
-    # !rm -rf '../../data_base/vector_db/chroma'  # 删除旧的数据库文件（如果文件夹中有文件的话），windows电脑请手动删除
+    # !rm -rf '../../data_base/vector_db/chroma'  
 
 
 
     vectordb = Chroma.from_documents(
         documents=split_docs,
         embedding=embedding,
-        persist_directory=persist_directory  # 允许我们将persist_directory目录保存到磁盘上
+        persist_directory=persist_directory  # persist_directory目录保存到磁盘上
     )
     print(f"向量库中存储的数量：{vectordb._collection.count()}")
     
